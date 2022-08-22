@@ -32,7 +32,7 @@
     border-width: 2px;
     margin: 30px;
     width: 350px;
-    height: 75px;
+    height: 95px;
     background-color: darkolivegreen;
 }
  .buttons {
@@ -65,9 +65,13 @@
  .lastValue, .display {
     height: 20px;
     padding: 3px;
-    margin: 2px;
+    margin: 5px;
     text-align: right;
     background-color: darkolivegreen;
+ }
+
+ .display{
+    font-size: 25px;
  }
 
  .lastValue {
@@ -80,4 +84,12 @@
 
  .calculator, .displayRes, .buttons, button{
     border-radius: 10px;
+ }
+
+ .equal {
+    background-color: brown;
+ }
+
+ .equal:hover{
+    background-color: rgb(230, 141, 135);
  }

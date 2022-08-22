@@ -3,6 +3,7 @@ const display = document.querySelector('.display');
 const lastValue = document.querySelector('.lastValue');  
 const buttons = document.querySelectorAll("button");
 
+
 //Common Values
 let displayValue="";
 let currentValue="";
@@ -16,6 +17,7 @@ const inputOperator = document.querySelectorAll('.operator');
 const startOperation = document.querySelectorAll('.equal');
 const clearOperation = document.querySelectorAll('.clear');
 const deleteValue = document.querySelectorAll('.delete');
+
 
 
 //Arithmetic functions
@@ -63,10 +65,8 @@ function populateDisplay (input){
     })
  });
 
- //Operators
-inputOperator.forEach((button) => {
-    button.addEventListener('click', ()=> {
-        currentOperator = button.textContent;
+function setOperator(operator) {
+    currentOperator = operator;
         display.textContent = `${displayValue} ${currentOperator}`;
         if (opCheck === true){
             waitingValue = operate(waitingValue,displayValue,currentOperator);
@@ -76,40 +76,84 @@ inputOperator.forEach((button) => {
         dotCheck = false; 
         opCheck = true;
         eqCheck = true;
-        
+}
+
+ //Operators
+inputOperator.forEach((button) => {
+    button.addEventListener('click', ()=> {
+        setOperator(button.textContent);
     })
 });
 
+function equalCalculation() {
+    Number(displayValue);
+    Number(waitingValue);
+        
+    if(eqCheck===true && waitingValue != ""){
+        lastValue.textContent=`${waitingValue} ${currentOperator} ${displayValue} = `;
+        displayValue = operate(waitingValue,displayValue,currentOperator);
+        eqCheck = false; 
+    }
+    displayValue = displayValue.toString();
+    display.textContent = displayValue;
+    currentOperator = "";
+        
+}
 //Equal
 startOperation.forEach((button) => {
     button.addEventListener('click', ()=> {
-        Number(displayValue);
-        Number(waitingValue);
-        
-        if(eqCheck===true && waitingValue != ""){
-          lastValue.textContent=`${waitingValue} ${currentOperator} ${displayValue} = `;
-          displayValue = operate(waitingValue,displayValue,currentOperator);
-          eqCheck = false; 
-        }
-        display.textContent = displayValue;
-        
+        equalCalculation();
     })
 });
 
+function setClear(){
+    displayValue = "";
+    waitingValue = "";
+    display.textContent = displayValue;
+    lastValue.textContent = waitingValue;
+}
 //Clear
 clearOperation.forEach((button) => {
     button.addEventListener('click', ()=> {
-        displayValue = "";
-        waitingValue = "";
-        display.textContent = displayValue;
-        lastValue.textContent = waitingValue;
+        setClear();
     })
 });
+
+function setDelete(){
+    displayValue = displayValue.slice(0,-1);
+    display.textContent = displayValue;
+}
 
 //Delete Value
 deleteValue.forEach((button) => {
     button.addEventListener('click', ()=> {
-        displayValue = "";
-        display.textContent = displayValue;
+        setDelete();
     })
 });
+
+//Keyboard Event Listener
+window.addEventListener('keydown', (event) =>{
+    this.blur();
+    let key = event.key;
+    if(key >= 0 && key <= 9) populateDisplay(key);
+    if(key === '.'){
+        if ( dotCheck === false && displayValue===""){
+            key = "0.";
+            dotCheck = true; 
+         } else if(dotCheck === true) {
+             key = "";
+         } else  dotCheck = true;
+         populateDisplay(key);
+    }
+    if(key === "=" || key === "Enter"){
+        equalCalculation();
+    }
+    if(key === "+" || key === "-" || key === "/" || key === "x" || key === "*"){
+        if (key === "*") key = "x";
+        setOperator(key);
+    }
+    if(key === "Backspace") setDelete();
+    if(key === "Escape") setClear();
+    
+    console.log(key);
+})
