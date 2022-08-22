@@ -3,8 +3,16 @@
     background-color: bisque;
 }
 
+body{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   align-items: center;
+}
+
 .wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 230px;
@@ -92,4 +100,8 @@
 
  .equal:hover{
     background-color: rgb(230, 141, 135);
+ }
+
+ .footer{
+   margin: 150px;
  }
